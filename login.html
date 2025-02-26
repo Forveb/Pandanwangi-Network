@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Member - $(identity)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="img/favicon.png" type="image/png">	
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/ionicons.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="wrap">
+    <div style="background-color: #3c8dbc;" class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a style="color:white" class="navbar-brand" href="#"><i style="font-size:20px;color:orange" class="ion ion-ribbon-b"></i> $(identity)</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+				$(if login-by)
+					<li class="active"><a href="status"><i class="ion ion-wifi"></i> Status</a></li>
+				$(else)
+                    <li class="active"><a href="login"><i class="ion ion-log-in"></i> Login</a></li>
+                $(endif)                    
+					<li><a href="#paket" data-toggle="modal" data-target="#paket"><i class="ion ion-cash"></i> Paket</a></li>
+					<li><a href="#kontak" data-toggle="modal" data-target="#kontak"><i class="ion ion-android-call"></i> Kontak</a></li>
+					<li><a href="#tentang" data-toggle="modal" data-target="#tentang"><i class="ion ion-ios-information-outline"></i> Tentang</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">	
+        <div style="padding:0" class="col-md-12">
+            <div class="panel panel-default">
+                <div style="padding:0" class="panel-body">
+                    <div class="card hovercard">
+						<br>
+                        <div class="cardheader">
+							<img alt="" src="img/pa-logo.png">
+                        </div>
+						<br>
+						<div class="col-md-12 col-md-6 left" id="box">
+										
+							<div class="alert alert-info head" style="text-align:center;font-size:14px; text-transform: capitalize;">Silahkan login sesuai jenis paket anda</div>
+							<div id="alert" class="alert-danger head" style="text-align:center;font-size:18px; text-transform: uppercase; font-weight: bold;"></div>
+							
+							$(if error)					
+								<script type="text/javascript">		
+									var error = "$(error)";
+									var error1 = "user $(username) has reached uptime limit";
+									var error2 = "user $(username) has reached traffic limit";
+									var error3 = "no valid profile found";
+									var error4 = "invalid username or password";
+									var error5 = "user &lt;$(username)&gt; not found";
+									var error6 = "simultaneous session limit reached";
+											
+									if (error == error1 || error == error2 || error == error3){
+										window.location.href = "expire.html";
+									} else if (error == error4){
+										document.getElementById("alert").innerHTML = "Mohon Periksa Informasi Login Anda";
+									} else if (error == error5){
+										document.getElementById("alert").innerHTML = "Member atau Voucher Tidak Ditemukan";
+									} else if (error == error6){
+										document.getElementById("alert").innerHTML = "Jumlah Session Login Telah Dibatasi";											
+									} else {
+										document.getElementById("alert").innerHTML = "$(error)";
+									} 
+								</script>
+							$(endif)							
+							
+								<div style="margin-top:15px;" class="btn-group btn-group-justified">
+									<div class="btn-group">
+										<button onclick="member()" type="button" style="width:50%" class="btn btn-info"><i class="ion ion-person-stalker"></i>MEMBER</button>
+										<button onclick="voucher()" type="button" style="width:50%" class="btn btn-warning"><i class="ion ion-card"></i>VOUCHER</button>
+									</div>
+								</div>								
+
+							$(if chap-id)
+								<form name="sendin" action="$(link-login-only)" method="post">
+									<input type="hidden" name="username" />
+									<input type="hidden" name="password" />
+									<input type="hidden" name="dst" value="$(link-orig)" />
+									<input type="hidden" name="popup" value="true" />
+								</form>
+								
+								<script type="text/javascript" src="js/md5.js"></script>
+								<script type="text/javascript">
+								
+								<!--
+									function doLogin() {
+									document.sendin.username.value = document.login.username.value;
+									document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challenge)');
+									document.sendin.submit();
+									return false;
+									}
+								//-->
+								</script>
+							$(endif)
+
+							<script type="text/javascript">
+								document.login.username.focus();
+							</script>							
+
+							<form name="login" action="$(link-login-only)" method="post" $(if chap-id) onSubmit="return doLogin()" $(endif)>
+								<input type="hidden" name="dst" value="$(link-orig)"/>
+								<input type="hidden" name="popup" value="true"/>							
+	
+								<div style="margin-top:20px;" class="input-group margin-bottom-sm">
+									<span class="input-group-addon"><i class="ion ion-person"></i></span>
+									<input class="form-control" type="text" id="username" name="username" placeholder="Nama Pengguna" required>
+								</div>
+								
+								<div style="margin-top:15px;" class="input-group">
+									<span class="input-group-addon"><i class="ion ion-locked"></i></span>
+									<input class="form-control" type="password" id="password" name="password" placeholder="Kata Sandi" required>
+								</div>								
+								
+								<hr style="margin-top:20px;margin-bottom:14px;border-color:#dddddd">
+								<div  id="member" style="margin-top:15px;" class="btn-group btn-group-justified mb15">
+									<div class="btn-group">
+										<button type="submit" class="btn btn-primary"><i class="ion ion-log-in"></i> LOGIN</button>
+									</div>
+								</div> 
+								<div id="voucher" style="margin-top:15px;display:none" class="btn-group btn-group-justified mb15">
+									<div class="btn-group">
+										<button type="submit" class="btn btn-primary"><i class="ion ion-log-in"></i> LOGIN</button>
+									</div>
+								</div>								
+							</form>
+							<br>
+						</div>
+						<div class="info">
+							<div class="col-md-12 col-md-6">
+								<table class="table table-bordered custom-table">
+									<thead>
+									<tr>
+										<th class="text-center">Voucher</th>
+										<th class="text-center">Aktif</th>
+										<th class="text-center">Harga</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td>12 Jam</td>
+										<td>3 Hari</td>
+										<td>Rp 5.000</td>
+									</tr>
+									<tr>
+										<td>24 Jam</td>
+										<td>7 Hari</td>
+										<td>Rp 8.000</td>
+									</tr>
+									<tr>
+										<td>72 Jam</td>
+										<td>15 Hari</td>
+										<td>Rp 20.000</td>
+									</tr>
+									<tr>
+										<td>168 Jam</td>
+										<td>30 Hari</td>
+										<td>Rp. 40.000</td>
+									</tr>
+									</tbody>
+								</table>
+
+								<div id="contact">
+									<div style="font-size:14px; line-height: 35px; color:#222222;" id="blinktxt" class="desc"><svg viewBox='0 0 24 24' width='18' height='18'> <path fill='#2E8B57' d='M16.75,13.96C17,14.09 17.16,14.16 17.21,14.26C17.27,14.37 17.25,14.87 17,15.44C16.8,16 15.76,16.54 15.3,16.56C14.84,16.58 14.83,16.92 12.34,15.83C9.85,14.74 8.35,12.08 8.23,11.91C8.11,11.74 7.27,10.53 7.31,9.3C7.36,8.08 8,7.5 8.26,7.26C8.5,7 8.77,6.97 8.94,7H9.41C9.56,7 9.77,6.94 9.96,7.45L10.65,9.32C10.71,9.45 10.75,9.6 10.66,9.76L10.39,10.17L10,10.59C9.88,10.71 9.74,10.84 9.88,11.09C10,11.35 10.5,12.18 11.2,12.87C12.11,13.75 12.91,14.04 13.15,14.17C13.39,14.31 13.54,14.29 13.69,14.13L14.5,13.19C14.69,12.94 14.85,13 15.08,13.08L16.75,13.96M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C10.03,22 8.2,21.43 6.65,20.45L2,22L3.55,17.35C2.57,15.8 2,13.97 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,13.72 4.54,15.31 5.46,16.61L4.5,19.5L7.39,18.54C8.69,19.46 10.28,20 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z'/>
+									</svg> WhatsApp : <a href="https://api.whatsapp.com/send?phone=6285335995559&text=Halo%20Admin"><b>0853 3599 5559</b></a></div>
+							
+									<div style="font-size:14px; margin-bottom: 15px;" class="desc"><span style="color:#222222">URL Hotspot :</span> <a href="$(link-login-only)" title="$(identity)" >http://pandawa.wifi/</a></div>
+								</div>
+						</div>
+					<div class="col-md-12 col-md-6">	
+						<div style="padding-top:20px;border-top:solid 1px #dddddd;text-align:left" class="row">							
+							<div class="col-md-12">
+								<div class="panel panel-default mb20 mini-box panel-hovered">
+									<div style="padding:0;background-color:#d9edf7;;color:#000000" class="panel-body">
+										<div class="clearfix">												
+											<div style="padding:10px;text-align:center">Hubungi WhatsApp kami untuk mendapatkan layanan Internet Unlimited..</div>
+										</div>
+									</div>
+									<div style="text-align:center" class="panel-footer clearfix panel-footer-sm panel-footer-primary">
+										<img alt="" src="img/google.png">
+										<img alt="" src="img/youtube.png">
+										<img alt="" src="img/gmail.png">
+										<img alt="" src="img/tiktok.png">
+										<img alt="" src="img/facebook.png">
+										<img alt="" src="img/instagram.png">
+									</div>
+								</div>
+							</div>
+						
+						</div>						
+					</div>	
+					</div>						
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer>
+<p style="text-align:center;color:#555" class="text-muted">Copyright 2018 &copy; Pandanwangi_Network</p><br>
+</div>
+</footer>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+<script>
+function voucher() {
+    document.getElementById("username").setAttribute("onInput", "getPassword(event)"); 
+	document.getElementById("username").setAttribute("placeholder", "Masukkan Kode Voucher"); 
+	document.getElementById("password").setAttribute("readonly","readonly");
+	document.getElementById("password").setAttribute("placeholder","••••••••");
+    var x = document.getElementById("member");
+	var y = document.getElementById("voucher");	
+	    x.style.display = "none";
+		y.style.display = "block";
+}
+function member() {
+    document.getElementById("username").removeAttribute("onInput"); 
+	document.getElementById("username").setAttribute("placeholder", "Nama Pengguna"); 
+	document.getElementById("password").removeAttribute("readonly"); 
+	document.getElementById("password").setAttribute("placeholder","Kata Sandi");
+	
+    var x = document.getElementById("member");
+	var y = document.getElementById("voucher");	
+        x.style.display = "block";
+		y.style.display = "none";	
+}
+</script>
+
+<!--modal paket-->			
+	<div class="modal fade" id="paket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+		<div style="width:90%;height:auto;margin-top:15px;background:transparent" class="modal-dialog" role="document">
+			<div style="background:transparent;box-shadow:none;border:none" class="modal-content">			
+				<div class="modal-body">
+					<section id="pricing-table">
+						<div class="container">
+							<div class="row">
+								<div class="pricing">
+									<div class="col-md-3 col-sm-12 col-xs-12">
+										<div class="pricing-table">
+											<div class="pricing-header">
+												<p class="pricing-title">Rp. 5.000</p>
+												<p class="pricing-rate">12 JAM</p>
+												<a href="#berlangganan" data-toggle="modal" data-target="#berlangganan" class="btn btn-custom">Berlangganan</a>
+											</div>
+											<div class="pricing-list">
+												<ul>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Masa Aktif 3 Hari</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Up To 20 Mbps</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Unlimited Data</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Bebas Log In/Out</li>
+												</ul>
+											</div>
+										</div>
+									</div>									
+									<div class="col-md-3 col-sm-12 col-xs-12">
+										<div class="pricing-table">
+											<div class="pricing-header">
+												<p class="pricing-title">Rp. 8.000</p>
+												<p class="pricing-rate">24 JAM</p>
+												<a href="#berlangganan" data-toggle="modal" data-target="#berlangganan" class="btn btn-custom">Berlangganan</a>
+											</div>
+											<div class="pricing-list">
+												<ul>												
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Masa Aktif 7 Hari</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Up To 20 Mbps</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Unlimited Data</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Bebas Log In/Out</li>
+												</ul>
+											</div>
+										</div>
+									</div>			
+									<div class="col-md-3 col-sm-12 col-xs-12">
+										<div class="pricing-table">
+											<div class="pricing-header">
+												<p class="pricing-title">Rp. 20.000</p>
+												<p class="pricing-rate">72 JAM</p>
+												<a href="#berlangganan" data-toggle="modal" data-target="#berlangganan" class="btn btn-custom">Berlangganan</a>
+											</div>
+			
+											<div class="pricing-list">
+												<ul>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Masa Aktif 15 Hari</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Up To 20 Mbps</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Unlimited Data</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Bebas Log In/Out</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3 col-sm-12 col-xs-12">
+										<div class="pricing-table">
+											<div class="pricing-header">
+												<p class="pricing-title">Rp. 40.000</p>
+												<p class="pricing-rate">168 JAM</p>
+												<a href="#berlangganan" data-toggle="modal" data-target="#berlangganan" class="btn btn-custom">Berlangganan</a>
+											</div>
+			
+											<div class="pricing-list">
+												<ul>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Masa Aktif 30 Hari</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Up To 20 Mbps</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Unlimited Data</li>
+													<li><i style="font-size:18px;color:#555555" class="ion ion-android-checkbox-outline"></i>Bebas Log In/Out</li>
+												</ul>
+											</div>
+										</div>
+									</div>									
+								</div>
+							</div>
+						</div>
+					</section>
+					<center><button style="width:80px" type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></center>
+				</div>
+			</div>
+		</div>
+	</div>	
+<!--modal paket-->	
+
+<!--modal kontak-->
+	<div class="modal fade" id="kontak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+		<div style="max-width:500px" class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div style="background-color:#34495e;color:#ffffff" class="modal-header">
+					<h4 style="text-align:center" class="modal-title" id="myModalLabel">Informasi Kontak</h4>
+				</div>
+				<div style="text-align:justify" class="modal-body">				
+					<h3 style="color:green;">- Info Kontak</h3>
+						<center>
+						<p style="width:80%;margin:20px auto" >Jika anda mempunyai pertanyaan seputar login hotspot atau ingin mengetahui informasi lebih lanjut silahkan menghubungi kami di nomor kontak dibawah ini :</p>
+						<p><a class='fixed-whatsapp' id='blinktxt' href='https://api.whatsapp.com/send?phone=6285335995559&text=Halo%20Admin' rel='nofollow noopener' target='_blank' title='Whatsapp'>
+						<svg viewBox='0 0 24 24' width='20' height='20'>
+						<path fill='#2E8B57' d='M16.75,13.96C17,14.09 17.16,14.16 17.21,14.26C17.27,14.37 17.25,14.87 17,15.44C16.8,16 15.76,16.54 15.3,16.56C14.84,16.58 14.83,16.92 12.34,15.83C9.85,14.74 8.35,12.08 8.23,11.91C8.11,11.74 7.27,10.53 7.31,9.3C7.36,8.08 8,7.5 8.26,7.26C8.5,7 8.77,6.97 8.94,7H9.41C9.56,7 9.77,6.94 9.96,7.45L10.65,9.32C10.71,9.45 10.75,9.6 10.66,9.76L10.39,10.17L10,10.59C9.88,10.71 9.74,10.84 9.88,11.09C10,11.35 10.5,12.18 11.2,12.87C12.11,13.75 12.91,14.04 13.15,14.17C13.39,14.31 13.54,14.29 13.69,14.13L14.5,13.19C14.69,12.94 14.85,13 15.08,13.08L16.75,13.96M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C10.03,22 8.2,21.43 6.65,20.45L2,22L3.55,17.35C2.57,15.8 2,13.97 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,13.72 4.54,15.31 5.46,16.61L4.5,19.5L7.39,18.54C8.69,19.46 10.28,20 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z'/>
+						<blink style="width:100%;margin:20px auto;font-size:20px;color:#337ab7;" >
+						<b>  WhatsApp :  <u>0853 3599 5559</b></blink></u>
+						</p></a>
+						</svg>
+						</center>
+						</br>
+					<center><button style="width:80px" type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></center>
+				</div>
+			</div>
+		</div>
+	</div>	
+<!--modal kontak-->
+
+<!--modal tentang-->
+	<div class="modal fade" id="tentang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+		<div style="max-width:500px" class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div style="background-color:#34495e;color:#ffffff" class="modal-header">
+					<h4 style="text-align:center" class="modal-title" id="myModalLabel">Tentang $(identity)</h4>
+				</div>
+				<div style="text-align:justify" class="modal-body">				
+					<h3 style="color:green;">- Tentang</h3>
+						<p style="width:85%;margin-left:25px" >
+							<span style="font-weight:bold;color:blue">$(identity)</span> merupakan sebuah Penyedia Layanan Internet Hotspot Unlimited Data dengan berbagai macam pilihan paket internet dan harga yang terjangkau</i>.</p>
+						</p>
+						
+					<h3 style="color:green;">- Keunggulan</h3>
+						<ul style="width:90%;margin-left:5px" >
+							<li>Jaringan Hotspot yang stabil</li>
+							<li>Manajemen Jaringan yang lebih terstruktur</li>
+							<li>Pemisahan Bandwidth Games, Browsing dan Download</li>
+							<li>Paket Data Unlimited atau Tanpa Quota</li>
+							<li>Full Support</li>
+						</ul>									
+					<center><button style="width:80px" type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></center>
+				</div>
+			</div>
+		</div>
+	</div>	
+<!--modal tentang-->
+
+<!--modal berlangganan-->
+	<div class="modal fade" id="berlangganan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+		<div style="max-width:500px" class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div style="background-color:#34495e;color:#ffffff" class="modal-header">
+					<h4 style="text-align:center" class="modal-title" id="myModalLabel">Berlangganan $(identity)</h4>
+				</div>
+				<div style="text-align:justify" class="modal-body">
+					<p style="width:80%;margin:20px auto">
+						Untuk berlangganan internet hotspot <strong>$(identity)</strong>, anda bisa datang langsung ke alamat kami untuk mendapatkan akun internet sesuai jenis paket pilihan anda dan menyelesaikan biaya administrasi ke bagian yang bersangkutan. Informasi lebih lanjut hubungi <span id="blinktxt"><svg viewBox='0 0 24 24' width='18' height='18'> <path fill='#2E8B57' d='M16.75,13.96C17,14.09 17.16,14.16 17.21,14.26C17.27,14.37 17.25,14.87 17,15.44C16.8,16 15.76,16.54 15.3,16.56C14.84,16.58 14.83,16.92 12.34,15.83C9.85,14.74 8.35,12.08 8.23,11.91C8.11,11.74 7.27,10.53 7.31,9.3C7.36,8.08 8,7.5 8.26,7.26C8.5,7 8.77,6.97 8.94,7H9.41C9.56,7 9.77,6.94 9.96,7.45L10.65,9.32C10.71,9.45 10.75,9.6 10.66,9.76L10.39,10.17L10,10.59C9.88,10.71 9.74,10.84 9.88,11.09C10,11.35 10.5,12.18 11.2,12.87C12.11,13.75 12.91,14.04 13.15,14.17C13.39,14.31 13.54,14.29 13.69,14.13L14.5,13.19C14.69,12.94 14.85,13 15.08,13.08L16.75,13.96M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C10.03,22 8.2,21.43 6.65,20.45L2,22L3.55,17.35C2.57,15.8 2,13.97 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,13.72 4.54,15.31 5.46,16.61L4.5,19.5L7.39,18.54C8.69,19.46 10.28,20 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z'/>
+						</svg> <a  id="blinktxt" href="https://api.whatsapp.com/send?phone=6285335995559&text=Halo%20Admin"><strong>WhatsApp : 0853 3599 5559</strong></a></span>
+						</p>
+						<p style="width:80%;margin:20px auto" >
+							Anda juga bisa melakukan pembayaran administrasi untuk berlangganan dengan mentransfer melalui ATM atau Internet Banking ke nomor rekening kami, pengajuan anda akan kami proses setelah konfirmasi bukti transfer kami terima.
+						</p>									
+					<center><button id="close" style="width:80px" type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></center>
+				</div>
+			</div>
+		</div>
+	</div>	
+<!--modal berlangganan-->
+	<script>
+		$(document).on("click","#close", function(){
+		   $('#paket').modal('hide');
+		   $('#berlangganan').modal('hide');
+		});	
+
+		/*function getpassword() {
+			password = $("#oteote").val();
+			$("#password").attr('value', password);
+		}*/
+
+		function getPassword(event){
+		    const value = event.target.value;
+		    $("#password").attr('value', value);
+		}					
+	</script>
+</body>
+</html>
